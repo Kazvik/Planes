@@ -3,10 +3,12 @@ from imports.gameHandlers import GameHandlers
 
 class ConsoleInterface:
     def __init__(self, gameController):
+        #function that initializes the ConsoleInterface
         self._game = gameController
         self._columnList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
         
     def printShots(self, grid):
+        #function that prints a gridShots on the screen
         textTable = Texttable()
         textTable.add_row([' '] + self._columnList)
         for i in range(8):
@@ -24,6 +26,7 @@ class ConsoleInterface:
         print("______________SHOTS GRID______________")
 
     def printPlanes(self, grid):
+        #function that prints a planesGrid on the screen
         textTable = Texttable()
         textTable.add_row([' '] + self._columnList)
         for i in range(8):
@@ -41,12 +44,13 @@ class ConsoleInterface:
         print("______________PLANES GRID______________")
 
     def placePlayerPlanes(self):
-        print("Place 2 planes first.")
+        #function that gets input from the user to place 2 planes.
+        print("You need to place 2 planes first.")
         noPlanes = 0
         while noPlanes < 2:
             self.printPlayerGrids()
-            cabinCellString = input("Please provide the cell of the cabin (e.g. A3, C7, H5 etc.): ")
-            cabinOrientationString = input("Please provide where the cabin should point to (up/down/left/right): ").lower()
+            cabinCellString = input("Cell of the cabin (e.g. A3): ")
+            cabinOrientationString = input("Direction(up/down/left/right): ").lower()
             try:
                 self._game.placePlayerPlane(cabinCellString, cabinOrientationString)
                 noPlanes += 1
@@ -54,46 +58,44 @@ class ConsoleInterface:
                 print(str(error))
 
     def printPlayerGrids(self):
+        #function that prints the player grids on the screen
         planesGrid = self._game.getPlayerPlanes()
         shotsGrid = self._game.getPlayerShots()
         self.printPlanes(planesGrid)
         self.printShots(shotsGrid)
 
     def playerHit(self):
+        #function that gets input from the user regarding the hit of a cell
         ok = False
         while ok == False:
-            cell = input("Enter the cell you want to hit (e.g. A1): ")
+            cell = input("The cell you want to hit: ")
             ok = True
             hitResult = self._game.PlayerShot(cell)
-            print(hitResult)
+            print("Player: " + hitResult)
 
     def PlayerChoice(self):
-        options = {
-            "1" : self.playerHit,
-            "2" : self.printPlayerGrids
-        }
-        ok = 0
-        while ok != 1:
-            print("1.Enter a cell to hit.")
-            print("2.View the grids.")
-            option = input("Option: ")
-            try:
-                if option not in options:
-                    raise Exception("Enter a valid option.")
-                options[option]()
-                ok = 1 
-            except Exception as e:
-                print(str(e))
+        #function that calls the PlayerChoice
+        self.printPlayerGrids()
+        try:
+            self.playerHit()
+        except Exception as ex:
+            print(str(ex))
 
     def ComputerChoice(self):
+        #function that gets the ComputerChoice
         hitResult = self._game.ComputerShot()
-        print(hitResult[0])
+        print("Computer: " + hitResult[0])
         
     def runGame(self):
+        #function that runs the Game
         self.placePlayerPlanes()
         winner = self._game.getWinner()
-        while winner is not None:
+        while winner is None:
             self.PlayerChoice()
+            winner = self._game.getWinner()
+            if winner == "player":
+                print("You won! Congratulations!")
+                break
             self.ComputerChoice()
             winner = self._game.getWinner()
         if winner == "player":

@@ -33,6 +33,7 @@ class GameHandlers():
     
     @staticmethod
     def stringToCoordinates(position):
+        #function that converts the 'position' from string to numerical coordinates
         realColumn = {
             'A': 0, 
             'B': 1, 

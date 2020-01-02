@@ -1,5 +1,3 @@
-
-
 class PlaneValidator():
     
     def __init__(self):
@@ -44,6 +42,7 @@ class RepositoryValidator():
     
     @staticmethod
     def validate_overlapping(plane, matrix):
+        #function that checks if two planes are overlapping or not in a grid
         pcells = plane.getPlaneCells()
         for x in pcells:
             r = x[0]
