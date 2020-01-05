@@ -7,9 +7,11 @@ class PlaneValidator():
     def validate_letter(letter):
         #function that validates if a letter is between A and H
         #letter - str
+        letter = str(letter)
         if letter < 'A' or letter > 'H':
             raise ValueError("Letter must be one of the following: A, B, C, D, E, F, G, H!")
     
+            
     @staticmethod
     def validate_digit(digit):
         #function that validates if a digit is between 1 and 8
