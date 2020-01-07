@@ -18,3 +18,6 @@ class Queue:
         #returns the size of the queue
         return len(self._data)
 
+    def clear(self):
+        #clears the queue
+        self._data.clear()

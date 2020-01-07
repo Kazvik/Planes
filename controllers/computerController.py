@@ -104,3 +104,6 @@ class ComputerController:
             if self.bool_cell(row + direction[0], column + direction[1]) == True and self._computerRepo.checkPlaneCell(row + direction[0], column + direction[1]) == -1:
                 self._queue.push((row + direction[0], column + direction[1]))
                 
+    def emptyQueue(self):
+        #clears the queue of moves
+        self._queue.clear()
